@@ -1,33 +1,33 @@
-version: "3.8"
+version: "3.9"
 
-networks:
-  bridge:
-
-volumes:
-  grafana-data:
-  loki-data:
+name: fastapi_observability
 
 services:
   loki:
-    image: grafana/loki:2.0.0
-    container_name: grafana-loki
-    command: -config.file=/mnt/loki-config.yml
+    container_name: loki
+    image: grafana/loki:2.3.0
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/config/loki-config.yaml:/etc/loki/loki-config.yaml
+      - ./loki/data:/data/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:2.3.0
     restart: unless-stopped
     volumes:
-      - ./loki-config.yml:/mnt/loki-config.yml
-      - loki-data:/loki
-    ports:
-      - 3100:3100
-    networks:
-      - bridge
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail/promtail-config.yaml
 
   grafana:
-    image: grafana/grafana:7.2.2
-    container_name: grafana
+    image: grafana/grafana:latest
     restart: unless-stopped
-    volumes:
-      - grafana-data:/var/lib/grafana
+    user: "0"
     ports:
-      - 3000:3000
-    networks:
-      - bridge
+      - "3000:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
