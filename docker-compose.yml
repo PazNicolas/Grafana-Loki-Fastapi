@@ -21,7 +21,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-    command: -config.file=/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail-config.yaml
 
   grafana:
     image: grafana/grafana:latest
