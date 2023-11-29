@@ -1,6 +1,6 @@
 version: "3.9"
 
-name: fastapi_observability
+name: fastapiobservabilty
 
 services:
   loki:
@@ -10,9 +10,9 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki/config/loki-config.yaml:/etc/loki/loki-config.yaml
+      - ./loki/config/loki-config.yml:/etc/loki/loki-config.yml
       - ./loki/data:/data/loki
-    command: -config.file=/etc/loki-config.yaml
+    command: -config.file=/etc/loki/loki-config.yml
 
   promtail:
     container_name: promtail
@@ -20,8 +20,8 @@ services:
     restart: unless-stopped
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-    command: -config.file=/etc/promtail-config.yaml
+      - ./promtail/config/promtail-config.yml:/etc/promtail/promtail-config.yml
+    command: -config.file=/etc/promtail/promtail-config.yml
 
   grafana:
     image: grafana/grafana:latest
