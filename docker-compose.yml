@@ -10,7 +10,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki/config/loki-config.yml:/etc/loki/loki-config.yml
+      - ./loki-config.yml:/etc/loki/loki-config.yml
       - ./loki/data:/data/loki
     command: -config.file=/etc/loki/loki-config.yml
 
@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./promtail/config/promtail-config.yml:/etc/promtail/promtail-config.yml
+      - ./promtail-config.yml:/etc/promtail/promtail-config.yml
     command: -config.file=/etc/promtail/promtail-config.yml
 
   grafana:
